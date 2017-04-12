@@ -1,6 +1,6 @@
 # android-calendar
 Android application with custom calendar. <br />
-This is a demo app that implements a custome calendar using Android 
+This is a demo app for a custom calendar view using Android 
 * ViewPager
 * GridLayout
 
