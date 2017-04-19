@@ -40,11 +40,11 @@ public class CalendarMonthView extends FrameLayout {
     }
 
     public void buildView(CalendarMonth calendarMonth) {
-        buildDaysLayout(calendarMonth);
+        buildDaysLayout();
         buildGridView(calendarMonth);
     }
 
-    private void buildDaysLayout(CalendarMonth calendarMonth) {
+    private void buildDaysLayout() {
         String[] days;
         days = getResources().getStringArray(R.array.days_sunday_array);
 
