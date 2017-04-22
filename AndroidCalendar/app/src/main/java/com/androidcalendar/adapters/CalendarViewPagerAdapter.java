@@ -4,6 +4,8 @@ import android.support.v4.view.PagerAdapter;
 import android.view.View;
 import android.view.ViewGroup;
 
+import com.androidcalendar.interfaces.OnDayViewClickListener;
+import com.androidcalendar.objects.CalendarDate;
 import com.androidcalendar.objects.CalendarMonth;
 import com.androidcalendar.views.CalendarMonthView;
 
@@ -12,20 +14,25 @@ import java.util.List;
 
 public class CalendarViewPagerAdapter extends PagerAdapter {
 
-    List<CalendarMonth> mData;
+    private List<CalendarMonth> mData;
+    private CalendarDate mSelectedDate;
+    private OnDayViewClickListener mListener;
 
-    public CalendarViewPagerAdapter(List<CalendarMonth> list) {
+    public CalendarViewPagerAdapter(List<CalendarMonth> list, OnDayViewClickListener listener) {
         mData = list;
+        mListener = listener;
     }
 
     @Override
     public Object instantiateItem(ViewGroup container, int position) {
         CalendarMonth month = mData.get(position);
-        CalendarMonthView calendarView = new CalendarMonthView(container.getContext());
-        calendarView.buildView(month);
-        (container).addView(calendarView, 0);
-        calendarView.setTag(month);
-        return calendarView;
+        CalendarMonthView monthView = new CalendarMonthView(container.getContext());
+        monthView.setSelectedDate(mSelectedDate);
+        monthView.setOnDayViewClickListener(mListener);
+        monthView.buildView(month);
+        (container).addView(monthView, 0);
+        monthView.setTag(month);
+        return monthView;
     }
 
     @Override
@@ -72,5 +79,9 @@ public class CalendarViewPagerAdapter extends PagerAdapter {
 
     public CalendarMonth getItem(int position) {
         return mData.get(position);
+    }
+
+    public void setSelectedDate(CalendarDate selectedDate) {
+        mSelectedDate = selectedDate;
     }
 }

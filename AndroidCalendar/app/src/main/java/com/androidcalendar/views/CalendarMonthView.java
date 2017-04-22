@@ -1,36 +1,37 @@
 package com.androidcalendar.views;
 
 import android.content.Context;
-import android.util.AttributeSet;
+import android.view.View;
 import android.view.ViewGroup;
 import android.widget.FrameLayout;
 import android.widget.GridLayout;
 import android.widget.TextView;
 
 import com.androidcalendar.R;
-import com.androidcalendar.utils.Utils;
+import com.androidcalendar.interfaces.OnDayViewClickListener;
 import com.androidcalendar.objects.CalendarDate;
 import com.androidcalendar.objects.CalendarMonth;
+import com.androidcalendar.utils.Utils;
 
 
-public class CalendarMonthView extends FrameLayout {
+public class CalendarMonthView extends FrameLayout implements View.OnClickListener {
 
     private GridLayout mGridLayout;
     private ViewGroup mLayoutDays;
+    private OnDayViewClickListener mListener;
+    private CalendarDate mSelectedDate;
 
     public CalendarMonthView(Context context) {
         super(context);
         init();
     }
 
-    public CalendarMonthView(Context context, AttributeSet attrs) {
-        super(context, attrs);
-        init();
+    public void setOnDayViewClickListener(OnDayViewClickListener listener) {
+        mListener = listener;
     }
 
-    public CalendarMonthView(Context context, AttributeSet attrs, int defStyleAttr) {
-        super(context, attrs, defStyleAttr);
-        init();
+    public void setSelectedDate(CalendarDate selectedDate) {
+        mSelectedDate = selectedDate;
     }
 
     private void init() {
@@ -60,31 +61,40 @@ public class CalendarMonthView extends FrameLayout {
         mGridLayout.setRowCount(row);
         mGridLayout.setColumnCount(col);
 
-        int screenWidth = Utils.getScreenWidth(getContext());
+        int screenWidth = Utils.getScreenWidth(getContext()); //TODO
         int width = screenWidth / col;
 
-        for (CalendarDate day : calendarMonth.getDays()) {
-            CalendarDayView dayView = new CalendarDayView(getContext(), day);
-            GridLayout.LayoutParams params = new GridLayout.LayoutParams();
+        for (CalendarDate date : calendarMonth.getDays()) {
+            GridLayout.LayoutParams params = new GridLayout.LayoutParams(); // TODO
             params.width = width;
             params.height = LayoutParams.WRAP_CONTENT;
 
+            CalendarDayView dayView = new CalendarDayView(getContext(), date);
             dayView.setLayoutParams(params);
-            dayView.setTextDay("" + day.getDay());
-            decorateDayView(dayView, day, calendarMonth.getMonth());
+            dayView.setOnClickListener(this);
+            decorateDayView(dayView, date, calendarMonth.getMonth());
             mGridLayout.addView(dayView);
         }
     }
 
-    protected void decorateDayView(CalendarDayView dayView, CalendarDate day, int month) {
+    private void decorateDayView(CalendarDayView dayView, CalendarDate day, int month) {
         if (day.getMonth() != month) {
             dayView.setOtherMothTextColor();
         } else {
             dayView.setThisMothTextColor();
         }
 
-        if (day.isToday()) {
+        if (mSelectedDate != null && mSelectedDate.isDateEqual(day)) {
             dayView.setPurpleSolidOvalBackground();
+        } else {
+            dayView.unsetPurpleSolidOvalBackground();
+        }
+    }
+
+    @Override
+    public void onClick(View view) {
+        if (mListener != null) {
+            mListener.onDayViewClick((CalendarDayView) view);
         }
     }
 }

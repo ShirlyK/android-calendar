@@ -1,6 +1,6 @@
 package com.androidcalendar.objects;
 
-import com.androidcalendar.utils.Utils;
+import com.androidcalendar.utils.DateUtils;
 
 import java.util.ArrayList;
 import java.util.Calendar;
@@ -58,6 +58,6 @@ public class CalendarMonth {
 
     @Override
     public String toString() {
-        return Utils.monthToString(mMonth) + "  " + mYear;
+        return DateUtils.monthToString(mMonth) + "  " + mYear;
     }
 }

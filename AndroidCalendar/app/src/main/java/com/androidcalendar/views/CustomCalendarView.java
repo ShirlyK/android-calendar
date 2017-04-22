@@ -13,6 +13,9 @@ import android.widget.TextView;
 
 import com.androidcalendar.R;
 import com.androidcalendar.adapters.CalendarViewPagerAdapter;
+import com.androidcalendar.interfaces.OnDateSelectedListener;
+import com.androidcalendar.interfaces.OnDayViewClickListener;
+import com.androidcalendar.objects.CalendarDate;
 import com.androidcalendar.objects.CalendarMonth;
 
 import java.util.ArrayList;
@@ -23,13 +26,14 @@ import java.util.List;
  * Created by ShirlyKadosh on 4/19/17.
  */
 
-public class CustomCalendarView extends FrameLayout implements View.OnClickListener {
+public class CustomCalendarView extends FrameLayout implements View.OnClickListener, OnDayViewClickListener {
 
     private TextView mPagerTextMonth;
     private ImageButton mButtonLeftArrow;
     private ImageButton mButtonRightArrow;
     private ViewPager mViewPager;
     private CalendarViewPagerAdapter mViewPagerAdapter;
+    private OnDateSelectedListener mListener;
 
     public CustomCalendarView(@NonNull Context context) {
         super(context);
@@ -57,6 +61,10 @@ public class CustomCalendarView extends FrameLayout implements View.OnClickListe
         buildCalendarView();
     }
 
+    public void setOnDateSelectedListener(OnDateSelectedListener listener) {
+        mListener = listener;
+    }
+
     @Override
     public void onClick(View view) {
         switch (view.getId()) {
@@ -71,7 +79,6 @@ public class CustomCalendarView extends FrameLayout implements View.OnClickListe
         }
     }
 
-
     private void buildCalendarView() {
         List<CalendarMonth> list = new ArrayList<>();
         CalendarMonth today = new CalendarMonth(Calendar.getInstance());
@@ -82,7 +89,8 @@ public class CustomCalendarView extends FrameLayout implements View.OnClickListe
         list.add(new CalendarMonth(today, 1));
         list.add(new CalendarMonth(today, 2));
 
-        mViewPagerAdapter = new CalendarViewPagerAdapter(list);
+        mViewPagerAdapter = new CalendarViewPagerAdapter(list, this);
+        mViewPagerAdapter.setSelectedDate(new CalendarDate(Calendar.getInstance()));
         mViewPager.setAdapter(mViewPagerAdapter);
         mViewPager.addOnPageChangeListener(mPageChangeListener);
         mViewPager.setOffscreenPageLimit(1);
@@ -127,5 +135,10 @@ public class CustomCalendarView extends FrameLayout implements View.OnClickListe
     private void addPrev() {
         CalendarMonth month = mViewPagerAdapter.getItem(0);
         mViewPagerAdapter.addPrev(new CalendarMonth(month, -1));
+    }
+
+    @Override
+    public void onDayViewClick(CalendarDayView view) {
+
     }
 }
