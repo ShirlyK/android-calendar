@@ -1,26 +1,33 @@
 package com.androidcalendar.adapters;
 
 import android.support.v4.view.PagerAdapter;
+import android.support.v4.view.ViewPager;
 import android.view.View;
 import android.view.ViewGroup;
 
 import com.androidcalendar.interfaces.OnDayViewClickListener;
 import com.androidcalendar.objects.CalendarDate;
 import com.androidcalendar.objects.CalendarMonth;
+import com.androidcalendar.views.CalendarDayView;
 import com.androidcalendar.views.CalendarMonthView;
 
+import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.List;
 
+import static android.view.View.FIND_VIEWS_WITH_CONTENT_DESCRIPTION;
 
-public class CalendarViewPagerAdapter extends PagerAdapter {
 
+public class CalendarViewPagerAdapter extends PagerAdapter implements OnDayViewClickListener {
+
+    private ViewPager mViewPager;
     private List<CalendarMonth> mData;
     private CalendarDate mSelectedDate;
-    private OnDayViewClickListener mListener;
 
-    public CalendarViewPagerAdapter(List<CalendarMonth> list, OnDayViewClickListener listener) {
+    public CalendarViewPagerAdapter(List<CalendarMonth> list, ViewPager viewPager) {
         mData = list;
-        mListener = listener;
+        mViewPager = viewPager;
+        mSelectedDate = new CalendarDate(Calendar.getInstance());
     }
 
     @Override
@@ -28,7 +35,7 @@ public class CalendarViewPagerAdapter extends PagerAdapter {
         CalendarMonth month = mData.get(position);
         CalendarMonthView monthView = new CalendarMonthView(container.getContext());
         monthView.setSelectedDate(mSelectedDate);
-        monthView.setOnDayViewClickListener(mListener);
+        monthView.setOnDayViewClickListener(this);
         monthView.buildView(month);
         (container).addView(monthView, 0);
         monthView.setTag(month);
@@ -81,7 +88,28 @@ public class CalendarViewPagerAdapter extends PagerAdapter {
         return mData.get(position);
     }
 
-    public void setSelectedDate(CalendarDate selectedDate) {
-        mSelectedDate = selectedDate;
+
+    @Override
+    public void onDayViewClick(CalendarDayView view) {
+        // unset old selection
+        decorateSelection(mSelectedDate.toString(), false);
+
+        // set new selection
+        mSelectedDate = view.getDate();
+        decorateSelection(mSelectedDate.toString(), true);
+    }
+
+    private void decorateSelection(String tag, boolean isSelected) {
+        ArrayList<View> output = new ArrayList<>();
+        mViewPager.findViewsWithText(output, tag, FIND_VIEWS_WITH_CONTENT_DESCRIPTION);
+        for (View outputView : output) {
+            CalendarDayView dayView = (CalendarDayView) outputView;
+            if (isSelected) {
+                dayView.setPurpleSolidOvalBackground();
+            } else {
+                dayView.unsetPurpleSolidOvalBackground();
+            }
+
+        }
     }
 }

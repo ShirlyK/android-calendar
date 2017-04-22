@@ -70,6 +70,7 @@ public class CalendarMonthView extends FrameLayout implements View.OnClickListen
             params.height = LayoutParams.WRAP_CONTENT;
 
             CalendarDayView dayView = new CalendarDayView(getContext(), date);
+            dayView.setContentDescription(date.toString());
             dayView.setLayoutParams(params);
             dayView.setOnClickListener(this);
             decorateDayView(dayView, date, calendarMonth.getMonth());

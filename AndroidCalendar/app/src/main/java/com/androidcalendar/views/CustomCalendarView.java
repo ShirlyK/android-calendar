@@ -14,8 +14,6 @@ import android.widget.TextView;
 import com.androidcalendar.R;
 import com.androidcalendar.adapters.CalendarViewPagerAdapter;
 import com.androidcalendar.interfaces.OnDateSelectedListener;
-import com.androidcalendar.interfaces.OnDayViewClickListener;
-import com.androidcalendar.objects.CalendarDate;
 import com.androidcalendar.objects.CalendarMonth;
 
 import java.util.ArrayList;
@@ -26,7 +24,7 @@ import java.util.List;
  * Created by ShirlyKadosh on 4/19/17.
  */
 
-public class CustomCalendarView extends FrameLayout implements View.OnClickListener, OnDayViewClickListener {
+public class CustomCalendarView extends FrameLayout implements View.OnClickListener {
 
     private TextView mPagerTextMonth;
     private ImageButton mButtonLeftArrow;
@@ -89,8 +87,7 @@ public class CustomCalendarView extends FrameLayout implements View.OnClickListe
         list.add(new CalendarMonth(today, 1));
         list.add(new CalendarMonth(today, 2));
 
-        mViewPagerAdapter = new CalendarViewPagerAdapter(list, this);
-        mViewPagerAdapter.setSelectedDate(new CalendarDate(Calendar.getInstance()));
+        mViewPagerAdapter = new CalendarViewPagerAdapter(list, mViewPager);
         mViewPager.setAdapter(mViewPagerAdapter);
         mViewPager.addOnPageChangeListener(mPageChangeListener);
         mViewPager.setOffscreenPageLimit(1);
@@ -137,8 +134,4 @@ public class CustomCalendarView extends FrameLayout implements View.OnClickListe
         mViewPagerAdapter.addPrev(new CalendarMonth(month, -1));
     }
 
-    @Override
-    public void onDayViewClick(CalendarDayView view) {
-
-    }
 }
