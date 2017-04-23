@@ -15,17 +15,6 @@ public class CalendarDate {
     /**
      * Constructor
      *
-     * @param calendar is a {@link java.util.Calendar} object.
-     */
-    public CalendarDate(Calendar calendar) {
-        mDay = calendar.get(Calendar.DAY_OF_MONTH);
-        mMonth = calendar.get(Calendar.MONTH);
-        mYear = calendar.get(Calendar.YEAR);
-    }
-
-    /**
-     * Constructor
-     *
      * @param day   is the number of day in the month.
      * @param month value is 0-based: 0 for January, 11 for December.
      * @param year
@@ -34,6 +23,29 @@ public class CalendarDate {
         mDay = day;
         mMonth = month;
         mYear = year;
+    }
+
+    /**
+     * Constructor
+     *
+     * @param calendar is a {@link java.util.Calendar} object.
+     */
+    public CalendarDate(Calendar calendar) {
+        this(calendar.get(Calendar.DAY_OF_MONTH),
+                calendar.get(Calendar.MONTH),
+                calendar.get(Calendar.YEAR));
+    }
+
+    /**
+     * Constructor
+     * This is a copy constructor.
+     *
+     * @param other is another instance of CalendarDate.
+     */
+    public CalendarDate(CalendarDate other) {
+        this(other.getDay(),
+                other.getMonth(),
+                other.getYear());
     }
 
     /**

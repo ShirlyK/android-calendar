@@ -61,11 +61,11 @@ public class CalendarMonthView extends FrameLayout implements View.OnClickListen
         mGridLayout.setRowCount(row);
         mGridLayout.setColumnCount(col);
 
-        int screenWidth = Utils.getScreenWidth(getContext()); //TODO
+        int screenWidth = Utils.getScreenWidth(getContext());
         int width = screenWidth / col;
 
         for (CalendarDate date : calendarMonth.getDays()) {
-            GridLayout.LayoutParams params = new GridLayout.LayoutParams(); // TODO
+            GridLayout.LayoutParams params = new GridLayout.LayoutParams();
             params.width = width;
             params.height = LayoutParams.WRAP_CONTENT;
 

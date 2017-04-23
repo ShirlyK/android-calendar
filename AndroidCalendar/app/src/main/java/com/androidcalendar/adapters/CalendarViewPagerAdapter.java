@@ -5,6 +5,7 @@ import android.support.v4.view.ViewPager;
 import android.view.View;
 import android.view.ViewGroup;
 
+import com.androidcalendar.interfaces.OnDateSelectedListener;
 import com.androidcalendar.interfaces.OnDayViewClickListener;
 import com.androidcalendar.objects.CalendarDate;
 import com.androidcalendar.objects.CalendarMonth;
@@ -23,6 +24,7 @@ public class CalendarViewPagerAdapter extends PagerAdapter implements OnDayViewC
     private ViewPager mViewPager;
     private List<CalendarMonth> mData;
     private CalendarDate mSelectedDate;
+    private OnDateSelectedListener mListener;
 
     public CalendarViewPagerAdapter(List<CalendarMonth> list, ViewPager viewPager) {
         mData = list;
@@ -88,6 +90,13 @@ public class CalendarViewPagerAdapter extends PagerAdapter implements OnDayViewC
         return mData.get(position);
     }
 
+    public void setOnDateSelectedListener(OnDateSelectedListener listener) {
+        mListener = listener;
+
+        if (mListener != null) {
+            mListener.onDateSelected(new CalendarDate(mSelectedDate));
+        }
+    }
 
     @Override
     public void onDayViewClick(CalendarDayView view) {
@@ -97,6 +106,10 @@ public class CalendarViewPagerAdapter extends PagerAdapter implements OnDayViewC
         // set new selection
         mSelectedDate = view.getDate();
         decorateSelection(mSelectedDate.toString(), true);
+
+        if (mListener != null) {
+            mListener.onDateSelected(new CalendarDate(mSelectedDate));
+        }
     }
 
     private void decorateSelection(String tag, boolean isSelected) {

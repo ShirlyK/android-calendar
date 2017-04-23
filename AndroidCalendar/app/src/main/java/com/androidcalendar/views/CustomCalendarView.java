@@ -60,7 +60,7 @@ public class CustomCalendarView extends FrameLayout implements View.OnClickListe
     }
 
     public void setOnDateSelectedListener(OnDateSelectedListener listener) {
-        mListener = listener;
+        mViewPagerAdapter.setOnDateSelectedListener(listener);
     }
 
     @Override
