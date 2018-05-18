@@ -51,9 +51,9 @@ public class CalendarWeek {
         Calendar calendar = Calendar.getInstance();
         calendar.set(mYear, mMonth, mCurrentDayOfMonth);
         int dayOfWeek = calendar.get(Calendar.DAY_OF_WEEK);
-        calendar.add(Calendar.DATE, 1-dayOfWeek);
+        calendar.add(Calendar.DATE, 1 - dayOfWeek);
 
-        Log.d("TEST", "Day of week :"+dayOfWeek+ "    DAte :"+calendar.getTime().toString());
+        Log.d("TEST", "Day of week :" + dayOfWeek + "    DAte :" + calendar.getTime().toString());
 
         CalendarDate date = new CalendarDate(calendar.get(Calendar.DAY_OF_MONTH), mMonth, mYear);
 
@@ -83,6 +83,6 @@ public class CalendarWeek {
 
     @Override
     public String toString() {
-        return mCurrentDayOfMonth + "  " + Utils.monthToString(mMonth) + "  " + mYear;
+        return Utils.monthToString(mMonth) + "  " + mYear;
     }
 }

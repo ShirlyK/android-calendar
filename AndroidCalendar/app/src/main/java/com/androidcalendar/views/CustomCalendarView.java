@@ -103,9 +103,9 @@ public class CustomCalendarView extends FrameLayout implements View.OnClickListe
 
         @Override
         public void onPageScrollStateChanged(int state) {
+
             int position = mViewPager.getCurrentItem();
             mPagerTextMonth.setText(mViewPagerAdapter.getItemPageHeader(position));
-
             // current item is the first item in the list
             if (state == ViewPager.SCROLL_STATE_IDLE && position == 1) {
                 addPrev();
