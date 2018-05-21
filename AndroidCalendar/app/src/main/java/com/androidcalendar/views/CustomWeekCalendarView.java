@@ -12,36 +12,36 @@ import android.widget.ImageButton;
 import android.widget.TextView;
 
 import com.androidcalendar.R;
-import com.androidcalendar.adapters.CalendarViewPagerAdapter;
-import com.androidcalendar.objects.CalendarMonth;
+import com.androidcalendar.adapters.CalendarWeekViewPagerAdapter;
+import com.androidcalendar.objects.CalendarWeek;
 
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.List;
 
 /**
- * Created by ShirlyKadosh on 4/19/17.
+ * Created by Dhananjay Patel on 4/19/17.
  */
 
-public class CustomCalendarView extends FrameLayout implements View.OnClickListener {
+public class CustomWeekCalendarView extends FrameLayout implements View.OnClickListener {
 
     private TextView mPagerTextMonth;
     private ImageButton mButtonLeftArrow;
     private ImageButton mButtonRightArrow;
     private ViewPager mViewPager;
-    private CalendarViewPagerAdapter mViewPagerAdapter;
+    private CalendarWeekViewPagerAdapter mViewPagerAdapter;
 
-    public CustomCalendarView(@NonNull Context context) {
+    public CustomWeekCalendarView(@NonNull Context context) {
         super(context);
         init();
     }
 
-    public CustomCalendarView(@NonNull Context context, @Nullable AttributeSet attrs) {
+    public CustomWeekCalendarView(@NonNull Context context, @Nullable AttributeSet attrs) {
         super(context, attrs);
         init();
     }
 
-    public CustomCalendarView(@NonNull Context context, @Nullable AttributeSet attrs, @AttrRes int defStyleAttr) {
+    public CustomWeekCalendarView(@NonNull Context context, @Nullable AttributeSet attrs, @AttrRes int defStyleAttr) {
         super(context, attrs, defStyleAttr);
         init();
     }
@@ -73,16 +73,16 @@ public class CustomCalendarView extends FrameLayout implements View.OnClickListe
 
 
     private void buildCalendarView() {
-        List<CalendarMonth> list = new ArrayList<>();
-        CalendarMonth today = new CalendarMonth(Calendar.getInstance());
+        List<CalendarWeek> list = new ArrayList<>();
+        CalendarWeek today = new CalendarWeek(Calendar.getInstance());
 
-        list.add(new CalendarMonth(today, -2));
-        list.add(new CalendarMonth(today, -1));
+        list.add(new CalendarWeek(today, -2));
+        list.add(new CalendarWeek(today, -1));
         list.add(today);
-        list.add(new CalendarMonth(today, 1));
-        list.add(new CalendarMonth(today, 2));
+        list.add(new CalendarWeek(today, 1));
+        list.add(new CalendarWeek(today, 2));
 
-        mViewPagerAdapter = new CalendarViewPagerAdapter(list);
+        mViewPagerAdapter = new CalendarWeekViewPagerAdapter(list);
         mViewPager.setAdapter(mViewPagerAdapter);
         mViewPager.addOnPageChangeListener(mPageChangeListener);
         mViewPager.setOffscreenPageLimit(1);
@@ -103,9 +103,9 @@ public class CustomCalendarView extends FrameLayout implements View.OnClickListe
 
         @Override
         public void onPageScrollStateChanged(int state) {
-
             int position = mViewPager.getCurrentItem();
             mPagerTextMonth.setText(mViewPagerAdapter.getItemPageHeader(position));
+
             // current item is the first item in the list
             if (state == ViewPager.SCROLL_STATE_IDLE && position == 1) {
                 addPrev();
@@ -120,12 +120,12 @@ public class CustomCalendarView extends FrameLayout implements View.OnClickListe
     };
 
     private void addNext() {
-        CalendarMonth month = mViewPagerAdapter.getItem(mViewPagerAdapter.getCount() - 1);
-        mViewPagerAdapter.addNext(new CalendarMonth(month, 1));
+        CalendarWeek week = mViewPagerAdapter.getItem(mViewPagerAdapter.getCount() - 1);
+        mViewPagerAdapter.addNext(new CalendarWeek(week, 1));
     }
 
     private void addPrev() {
-        CalendarMonth month = mViewPagerAdapter.getItem(0);
-        mViewPagerAdapter.addPrev(new CalendarMonth(month, -1));
+        CalendarWeek week = mViewPagerAdapter.getItem(0);
+        mViewPagerAdapter.addPrev(new CalendarWeek(week, -1));
     }
 }
